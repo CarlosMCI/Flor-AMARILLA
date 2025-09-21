@@ -1,0 +1,245 @@
+body {
+    display: block; /* Volvemos al display por defecto */
+    min-height: 100vh;
+    margin: 0;
+    background: radial-gradient(circle at center, #0d1b2a, #000000);
+    overflow: hidden;
+    position: relative; /* Es necesario para que los elementos absolutos se posicionen respecto al body */
+}
+
+/* Título */
+.titulo {
+    position: absolute;
+    top: 15%; /* Posiciona el título a 15% de la parte superior */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffeb3b;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    animation: aparecer 2s ease-out forwards, brillo 3s linear infinite alternate;
+    opacity: 0;
+    z-index: 20;
+}
+
+.titulo span {
+    color: red;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(-30px) translateX(-50%); }
+    to { opacity: 1; transform: translateY(0) translateX(-50%); }
+}
+
+@keyframes brillo {
+    0%   { text-shadow: 0 0 5px #fff176, 0 0 10px #fff176; }
+    100% { text-shadow: 0 0 20px #ffeb3b, 0 0 30px #fdd835; }
+}
+
+/* Contenedor principal de la flor */
+.flower-wrapper {
+    position: absolute;
+    bottom: 10%; /* Posiciona la flor completa a 10% de la parte inferior */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; /* Tamaño del contenedor de la flor */
+    height: 350px; /* Altura total de la flor y el tallo */
+}
+
+.flower {
+    --size: 200px;
+    --petal-color-1: #ffeb3b;
+    --petal-color-2: #fbc02d;
+    --center-color: #795548;
+    position: absolute; /* Posicionamiento absoluto */
+    width: var(--size);
+    height: var(--size);
+    cursor: pointer;
+    z-index: 10;
+    animation: sway 6s ease-in-out infinite alternate;
+    transform-origin: 50% 100%;
+}
+
+/* Pétalos */
+.petal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.petal::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--size) * 0.18);
+    height: calc(var(--size) * 0.5);
+    margin-left: calc(-1 * (var(--size) * 0.18) / 2);
+    margin-top: calc(-1 * (var(--size) * 0.5) / 2);
+    border-radius: 70% 70% 40% 40%;
+    background: radial-gradient(circle at 50% 25%, var(--petal-color-1), var(--petal-color-2));
+    transform-origin: 50% 85%;
+    animation: bloom 700ms cubic-bezier(.23,1,.32,1) forwards;
+}
+
+/* Centro */
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--size) * 0.3);
+    height: calc(var(--size) * 0.3);
+    margin-left: calc(-1 * var(--size) * 0.15);
+    margin-top: calc(-1 * var(--size) * 0.15);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #a1887f, var(--center-color));
+    box-shadow: inset -4px -4px 6px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Tallo */
+.stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 12px;
+    height: 200px;
+    margin-left: -6px;
+    background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+    border-radius: 6px;
+    z-index: -1;
+}
+
+/* Hojas */
+.leaf {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    background: linear-gradient(to right, #43a047, #2e7d32);
+    border-radius: 60% 60% 60% 60%;
+    top: 50px;
+    z-index: 0;
+}
+.leaf.left {
+    left: -50px;
+    transform: rotate(-30deg);
+}
+.leaf.right {
+    right: -50px;
+    transform: rotate(30deg);
+}
+
+/* Animaciones */
+@keyframes bloom {
+    0% { transform: scaleY(0.001); }
+    100% { transform: scaleY(1); }
+}
+@keyframes sway {
+    0% { transform: rotateZ(-3deg); }
+    100% { transform: rotateZ(3deg); }
+}
+/* Brillitos en el fondo */
+.background-sparks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Permite interactuar con lo que está debajo */
+    z-index: 5; /* Asegúrate de que estén por encima del fondo pero debajo de la flor y el texto */
+}
+
+/* Estrellas en el fondo (más grandes) */
+.background-sparks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    background: transparent;
+}
+
+.background-sparks::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* --- CAMBIO AQUÍ: Tamaño base de la "estrella" --- */
+    width: 3px; /* Aumentamos el tamaño base */
+    height: 3px; /* Aumentamos el tamaño base */
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 
+        /* Formato de box-shadow: horizontal-offset vertical-offset blur-radius spread-radius color */
+        100px 50px 0 1px #fff, /* 1px de radio de expansión para un poco más de tamaño */
+        250px 150px 0 0px #fff,
+        400px 300px 0 1px #fff,
+        600px 200px 0 0px #fff,
+        750px 450px 0 1px #fff,
+        900px 100px 0 0px #fff,
+        150px 400px 0 1px #fff,
+        500px 550px 0 0px #fff,
+        850px 600px 0 1px #fff,
+        300px 700px 0 0px #fff,
+        700px 800px 0 1px #fff,
+        50px 900px 0 0px #fff,
+        200px 850px 0 1px #fff,
+        450px 950px 0 0px #fff,
+        800px 900px 0 1px #fff,
+        1000px 750px 0 0px #fff,
+        1100px 500px 0 1px #fff,
+        1200px 150px 0 0px #fff,
+        1300px 350px 0 1px #fff,
+        1400px 650px 0 0px #fff;
+
+    animation: star-twinkle 10s infinite;
+}
+
+@keyframes star-twinkle {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Segundo conjunto de estrellas, también más grandes */
+.background-sparks::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* --- CAMBIO AQUÍ: Tamaño base de la "estrella" --- */
+    width: 2px; /* Un poco más pequeñas que las del ::before */
+    height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 
+        50px 500px 0 0px #fff,
+        250px 800px 0 1px #fff,
+        400px 900px 0 0px #fff,
+        600px 100px 0 1px #fff,
+        750px 300px 0 0px #fff,
+        900px 600px 0 1px #fff,
+        150px 100px 0 0px #fff,
+        500px 250px 0 1px #fff,
+        850px 400px 0 0px #fff,
+        300px 550px 0 1px #fff,
+        700px 650px 0 0px #fff,
+        50px 200px 0 1px #fff,
+        200px 350px 0 0px #fff,
+        450px 150px 0 1px #fff,
+        800px 200px 0 0px #fff,
+        1000px 450px 0 1px #fff,
+        1100px 900px 0 0px #fff,
+        1200px 700px 0 1px #fff,
+        1300px 950px 0 0px #fff,
+        1400px 300px 0 1px #fff;
+    animation: star-twinkle 12s infinite reverse;
+}
